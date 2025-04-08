@@ -17,15 +17,17 @@ function Leaderboard() {
         <table className="table table-striped">
           <thead>
             <tr>
-              <th>Team</th>
-              <th>Score</th>
+              <th>Team Name</th>
+              <th>Members</th>
+              <th>Total Points</th>
             </tr>
           </thead>
           <tbody>
             {leaderboard.map(entry => (
               <tr key={entry._id}>
-                <td>{entry.team ? entry.team.name : 'Unknown Team'}</td>
-                <td>{entry.points}</td>
+                <td>{entry.team.name}</td>
+                <td>{entry.team.members ? entry.team.members.map(member => member.username).join(', ') : 'No members'}</td>
+                <td>{entry.team.total_points || 0}</td>
               </tr>
             ))}
           </tbody>
