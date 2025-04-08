@@ -1,14 +1,15 @@
 from django.core.management.base import BaseCommand
 from octofit_tracker.models import User, Team, Activity, Leaderboard, Workout
 from datetime import date
+from django.contrib.auth.hashers import make_password
 
 class Command(BaseCommand):
     help = 'Populate the database with test data for users, teams, activities, leaderboard, and workouts'
 
     def handle(self, *args, **kwargs):
         # Clear existing data safely
-        User.objects.all().delete()
-        Team.objects.all().delete()
+        User.objects.filter(pk__isnull=False).delete()
+        Team.objects.filter(pk__isnull=False).delete()
         Activity.objects.all().delete()
         Leaderboard.objects.all().delete()
         Workout.objects.all().delete()
@@ -24,6 +25,7 @@ class Command(BaseCommand):
 
         # Save users to the database
         for user in users:
+            user.password = make_password(user.password)  # Hash the password manually
             user.save()
 
         # Create teams
@@ -44,7 +46,8 @@ class Command(BaseCommand):
             Activity(user=User.objects.get(username='crashoverride'), activity_type='Strength', duration=30, date=date(2025, 4, 5)),
             Activity(user=User.objects.get(username='sleeptoken'), activity_type='Swimming', duration=75, date=date(2025, 4, 4)),
         ]
-        Activity.objects.bulk_create(activities)
+        for activity in activities:
+            activity.save()
 
         # Create leaderboard entries
         leaderboard_entries = [
