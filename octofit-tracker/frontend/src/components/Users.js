@@ -1,11 +1,18 @@
 import React, { useEffect, useState } from 'react';
 
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'https://opulent-space-orbit-969wg6g9pxh7r5x-8000.app.github.dev';
+
 function Users() {
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
-    fetch('https://opulent-space-orbit-969wg6g9pxh7r5x-8000.app.github.dev/api/users/')
-      .then(response => response.json())
+    fetch(`${API_BASE_URL}/api/users/`)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
       .then(data => setUsers(data))
       .catch(error => console.error('Error fetching users:', error));
   }, []);
