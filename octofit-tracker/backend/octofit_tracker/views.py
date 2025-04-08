@@ -7,9 +7,7 @@ from .serializers import UserSerializer, TeamSerializer, ActivitySerializer, Lea
 
 @api_view(['GET'])
 def api_root(request, format=None):
-    base_url = request.build_absolute_uri('/')
-    if base_url.endswith('/'):
-        base_url = base_url[:-1]
+    base_url = 'https://opulent-space-orbit-969wg6g9pxh7r5x-8000.app.github.dev/'
     # Log the base_url for debugging purposes
     print(f"Base URL: {base_url}")
     return Response({
