@@ -18,12 +18,16 @@ function Teams() {
           <thead>
             <tr>
               <th>Team Name</th>
+              <th>Members</th>
+              <th>Total Points</th>
             </tr>
           </thead>
           <tbody>
             {teams.map(team => (
               <tr key={team._id}>
                 <td>{team.name}</td>
+                <td>{team.members ? team.members.map(member => member.username).join(', ') : 'No members'}</td>
+                <td>{team.total_points || 0}</td>
               </tr>
             ))}
           </tbody>

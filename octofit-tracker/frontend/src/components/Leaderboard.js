@@ -4,7 +4,7 @@ function Leaderboard() {
   const [leaderboard, setLeaderboard] = useState([]);
 
   useEffect(() => {
-    fetch('https://opulent-space-orbit-969wg6g9pxh7r5x-8000.app.github.dev/api/leaderboard/')
+    fetch('https://opulent-space-orbit-969wg6g9pxh7r5x-8000.app.github.dev/api/leaderboards/')
       .then(response => response.json())
       .then(data => setLeaderboard(data))
       .catch(error => console.error('Error fetching leaderboard:', error));
@@ -17,15 +17,15 @@ function Leaderboard() {
         <table className="table table-striped">
           <thead>
             <tr>
-              <th>Username</th>
+              <th>Team</th>
               <th>Score</th>
             </tr>
           </thead>
           <tbody>
             {leaderboard.map(entry => (
               <tr key={entry._id}>
-                <td>{entry.user.username}</td>
-                <td>{entry.score}</td>
+                <td>{entry.team ? entry.team.name : 'Unknown Team'}</td>
+                <td>{entry.points}</td>
               </tr>
             ))}
           </tbody>

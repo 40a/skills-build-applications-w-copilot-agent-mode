@@ -17,15 +17,19 @@ function Activities() {
         <table className="table table-striped">
           <thead>
             <tr>
+              <th>User</th>
               <th>Activity Type</th>
               <th>Duration</th>
+              <th>Points</th>
             </tr>
           </thead>
           <tbody>
             {activities.map(activity => (
               <tr key={activity._id}>
+                <td>{activity.user ? activity.user.username : 'Unknown User'}</td>
                 <td>{activity.activity_type}</td>
-                <td>{activity.duration}</td>
+                <td>{activity.duration} minutes</td>
+                <td>{activity.points}</td>
               </tr>
             ))}
           </tbody>
