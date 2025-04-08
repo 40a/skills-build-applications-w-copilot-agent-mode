@@ -2,31 +2,42 @@ from django.core.management.base import BaseCommand
 from octofit_tracker.models import User, Team, Activity, Leaderboard, Workout
 from datetime import date
 from django.contrib.auth.hashers import make_password
+from bson import ObjectId
 
 class Command(BaseCommand):
     help = 'Populate the database with test data for users, teams, activities, leaderboard, and workouts'
 
     def handle(self, *args, **kwargs):
-        # Clear existing data safely
+        # Enforce stricter cleanup by resetting the database
         User.objects.filter(pk__isnull=False).delete()
         Team.objects.filter(pk__isnull=False).delete()
         Activity.objects.all().delete()
         Leaderboard.objects.all().delete()
         Workout.objects.all().delete()
 
-        # Create users
-        users = [
-            User(username='thundergod', email='thundergod@mhigh.edu', password='password1'),
-            User(username='metalgeek', email='metalgeek@mhigh.edu', password='password2'),
-            User(username='zerocool', email='zerocool@mhigh.edu', password='password3'),
-            User(username='crashoverride', email='crashoverride@mhigh.edu', password='password4'),
-            User(username='sleeptoken', email='sleeptoken@mhigh.edu', password='password5'),
-        ]
+        # Ensure users are created only if they do not already exist
+        for user_data in [
+            {'username': 'thundergod', 'email': 'thundergod@mhigh.edu', 'password': 'password1'},
+            {'username': 'metalgeek', 'email': 'metalgeek@mhigh.edu', 'password': 'password2'},
+            {'username': 'zerocool', 'email': 'zerocool@mhigh.edu', 'password': 'password3'},
+            {'username': 'crashoverride', 'email': 'crashoverride@mhigh.edu', 'password': 'password4'},
+            {'username': 'sleeptoken', 'email': 'sleeptoken@mhigh.edu', 'password': 'password5'},
+        ]:
+            User.objects.filter(username=user_data['username']).delete()  # Remove duplicates
+            user, created = User.objects.get_or_create(username=user_data['username'], defaults={
+                'id': ObjectId(),  # Explicitly set ObjectId
+                'email': user_data['email'],
+                'password': make_password(user_data['password']),
+            })
 
-        # Save users to the database
-        for user in users:
-            user.password = make_password(user.password)  # Hash the password manually
+        # Ensure all users are saved before adding them to teams
+        for user in User.objects.all():
             user.save()
+            self.stdout.write(self.style.SUCCESS(f"User saved: {user.username}, ID: {user.id}"))
+
+        # Debugging output to verify user primary keys
+        for user in User.objects.all():
+            self.stdout.write(self.style.SUCCESS(f"User: {user.username}, ID: {user.id}"))
 
         # Create teams
         team1 = Team(name='Blue Team')
@@ -35,10 +46,16 @@ class Command(BaseCommand):
         team2.save()
 
         # Assign members to teams
-        team1.members.add(*users[:3])  # First three users in Blue Team
-        team2.members.add(*users[3:])  # Last two users in Gold Team
+        team1.members.add(*User.objects.filter(username__in=['thundergod', 'metalgeek', 'zerocool']))  # First three users in Blue Team
+        team2.members.add(*User.objects.filter(username__in=['crashoverride', 'sleeptoken']))  # Last two users in Gold Team
 
-        # Save activities with proper user references
+        # Retrieve saved users from the database
+        saved_users = {user.username: user for user in User.objects.all()}
+
+        # Debugging output to verify saved users
+        self.stdout.write(self.style.SUCCESS(f"Saved users: {saved_users}"))
+
+        # Explicitly query the database for each user when creating activities
         activities = [
             Activity(user=User.objects.get(username='thundergod'), activity_type='Cycling', duration=60, date=date(2025, 4, 8)),
             Activity(user=User.objects.get(username='metalgeek'), activity_type='Crossfit', duration=120, date=date(2025, 4, 7)),
