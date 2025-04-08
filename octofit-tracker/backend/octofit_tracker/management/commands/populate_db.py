@@ -6,12 +6,12 @@ class Command(BaseCommand):
     help = 'Populate the database with test data for users, teams, activities, leaderboard, and workouts'
 
     def handle(self, *args, **kwargs):
-        # Clear existing data
-        User.objects.all().delete()
-        Team.objects.all().delete()
-        Activity.objects.all().delete()
-        Leaderboard.objects.all().delete()
-        Workout.objects.all().delete()
+        # Clear existing data safely
+        User.objects.filter().delete()
+        Team.objects.filter().delete()
+        Activity.objects.filter().delete()
+        Leaderboard.objects.filter().delete()
+        Workout.objects.filter().delete()
 
         # Create users
         users = [
@@ -21,23 +21,28 @@ class Command(BaseCommand):
             User(username='crashoverride', email='crashoverride@mhigh.edu', password='password4'),
             User(username='sleeptoken', email='sleeptoken@mhigh.edu', password='password5'),
         ]
-        User.objects.bulk_create(users)
+
+        # Save users to the database
+        for user in users:
+            user.save()
 
         # Create teams
         team1 = Team(name='Blue Team')
         team2 = Team(name='Gold Team')
         team1.save()
         team2.save()
-        team1.members.set(users[:3])  # First three users in Blue Team
-        team2.members.set(users[3:])  # Last two users in Gold Team
 
-        # Create activities
+        # Assign members to teams
+        team1.members.add(*users[:3])  # First three users in Blue Team
+        team2.members.add(*users[3:])  # Last two users in Gold Team
+
+        # Save activities with proper user references
         activities = [
-            Activity(user=users[0], activity_type='Cycling', duration=60, date=date(2025, 4, 8)),
-            Activity(user=users[1], activity_type='Crossfit', duration=120, date=date(2025, 4, 7)),
-            Activity(user=users[2], activity_type='Running', duration=90, date=date(2025, 4, 6)),
-            Activity(user=users[3], activity_type='Strength', duration=30, date=date(2025, 4, 5)),
-            Activity(user=users[4], activity_type='Swimming', duration=75, date=date(2025, 4, 4)),
+            Activity(user=User.objects.get(username='thundergod'), activity_type='Cycling', duration=60, date=date(2025, 4, 8)),
+            Activity(user=User.objects.get(username='metalgeek'), activity_type='Crossfit', duration=120, date=date(2025, 4, 7)),
+            Activity(user=User.objects.get(username='zerocool'), activity_type='Running', duration=90, date=date(2025, 4, 6)),
+            Activity(user=User.objects.get(username='crashoverride'), activity_type='Strength', duration=30, date=date(2025, 4, 5)),
+            Activity(user=User.objects.get(username='sleeptoken'), activity_type='Swimming', duration=75, date=date(2025, 4, 4)),
         ]
         Activity.objects.bulk_create(activities)
 
