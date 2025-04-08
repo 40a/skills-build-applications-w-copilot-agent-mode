@@ -7,11 +7,11 @@ class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
         # Clear existing data safely
-        User.objects.filter().delete()
-        Team.objects.filter().delete()
-        Activity.objects.filter().delete()
-        Leaderboard.objects.filter().delete()
-        Workout.objects.filter().delete()
+        User.objects.all().delete()
+        Team.objects.all().delete()
+        Activity.objects.all().delete()
+        Leaderboard.objects.all().delete()
+        Workout.objects.all().delete()
 
         # Create users
         users = [

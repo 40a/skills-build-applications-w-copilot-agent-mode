@@ -1,34 +1,31 @@
 {
   "users": [
-    {"username": "thundergod", "email": "thundergod@mhigh.edu", "password": "thundergodpassword"},
-    {"username": "metalgeek", "email": "metalgeek@mhigh.edu", "password": "metalgeekpassword"},
-    {"username": "zerocool", "email": "zerocool@mhigh.edu", "password": "zerocoolpassword"},
-    {"username": "crashoverride", "email": "crashoverride@hmhigh.edu", "password": "crashoverridepassword"},
-    {"username": "sleeptoken", "email": "sleeptoken@mhigh.edu", "password": "sleeptokenpassword"}
+    {"username": "thundergod", "email": "thundergod@mhigh.edu", "password": "password1"},
+    {"username": "metalgeek", "email": "metalgeek@mhigh.edu", "password": "password2"},
+    {"username": "zerocool", "email": "zerocool@mhigh.edu", "password": "password3"},
+    {"username": "crashoverride", "email": "crashoverride@mhigh.edu", "password": "password4"},
+    {"username": "sleeptoken", "email": "sleeptoken@mhigh.edu", "password": "password5"}
   ],
   "teams": [
-    {"name": "Blue Team"},
-    {"name": "Gold Team"}
+    {"name": "Blue Team", "members": ["thundergod", "metalgeek", "zerocool"]},
+    {"name": "Gold Team", "members": ["crashoverride", "sleeptoken"]}
   ],
   "activities": [
-    {"user": "thundergod", "activity_type": "Cycling", "duration": "1:00:00"},
-    {"user": "metalgeek", "activity_type": "Crossfit", "duration": "2:00:00"},
-    {"user": "zerocool", "activity_type": "Running", "duration": "1:30:00"},
-    {"user": "crashoverride", "activity_type": "Strength", "duration": "0:30:00"},
-    {"user": "sleeptoken", "activity_type": "Swimming", "duration": "1:15:00"}
+    {"user": "thundergod", "activity_type": "Cycling", "duration": 60, "date": "2025-04-08"},
+    {"user": "metalgeek", "activity_type": "Crossfit", "duration": 120, "date": "2025-04-07"},
+    {"user": "zerocool", "activity_type": "Running", "duration": 90, "date": "2025-04-06"},
+    {"user": "crashoverride", "activity_type": "Strength", "duration": 30, "date": "2025-04-05"},
+    {"user": "sleeptoken", "activity_type": "Swimming", "duration": 75, "date": "2025-04-04"}
   ],
   "leaderboard": [
-    {"user": "thundergod", "score": 100},
-    {"user": "metalgeek", "score": 90},
-    {"user": "zerocool", "score": 95},
-    {"user": "crashoverride", "score": 85},
-    {"user": "sleeptoken", "score": 80}
+    {"team": "Blue Team", "points": 300},
+    {"team": "Gold Team", "points": 200}
   ],
   "workouts": [
-    {"name": "Cycling Training", "description": "Training for a road cycling event"},
-    {"name": "Crossfit", "description": "Training for a crossfit competition"},
-    {"name": "Running Training", "description": "Training for a marathon"},
-    {"name": "Strength Training", "description": "Training for strength"},
-    {"name": "Swimming Training", "description": "Training for a swimming competition"}
+    {"name": "Cycling Training", "description": "Training for a road cycling event", "duration": 60},
+    {"name": "Crossfit", "description": "High-intensity interval training", "duration": 120},
+    {"name": "Running Training", "description": "Training for a marathon", "duration": 90},
+    {"name": "Strength Training", "description": "Weightlifting and strength exercises", "duration": 30},
+    {"name": "Swimming Training", "description": "Training for a swimming competition", "duration": 75}
   ]
 }
