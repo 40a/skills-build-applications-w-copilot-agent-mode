@@ -10,7 +10,10 @@ def api_root(request, format=None):
     base_url = request.build_absolute_uri('/')
     if base_url.endswith('/'):
         base_url = base_url[:-1]
+    # Log the base_url for debugging purposes
+    print(f"Base URL: {base_url}")
     return Response({
+        'base_url': base_url,
         'users': base_url + 'api/users/?format=api',
         'teams': base_url + 'api/teams/?format=api',
         'activities': base_url + 'api/activities/?format=api',
