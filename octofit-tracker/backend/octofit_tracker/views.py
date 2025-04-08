@@ -7,7 +7,7 @@ from .serializers import UserSerializer, TeamSerializer, ActivitySerializer, Lea
 
 @api_view(['GET'])
 def api_root(request, format=None):
-    base_url = 'https://opulent-space-orbit-969wg6g9pxh7r5x-8000.app.github.dev/'
+    base_url = request.build_absolute_uri('/')
     return Response({
         'users': base_url + 'api/users/?format=api',
         'teams': base_url + 'api/teams/?format=api',
