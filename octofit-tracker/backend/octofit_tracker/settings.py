@@ -25,7 +25,8 @@ SECRET_KEY = "django-insecure-94-#1d^67f0+@d&i9qb%s77c%wy15_jbfyl*5n2ef(05w8uc1k
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+# Add the Codespace URL and localhost to the allowed hosts
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'opulent-space-orbit-969wg6g9pxh7r5x-8000.app.github.dev']
 
 
 # Application definition
