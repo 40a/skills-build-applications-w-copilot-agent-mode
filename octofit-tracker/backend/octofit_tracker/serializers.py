@@ -1,5 +1,10 @@
 from rest_framework import serializers
+from bson import ObjectId
 from .models import User, Team, Activity, Leaderboard, Workout
+
+class ObjectIdField(serializers.Field):
+    def to_representation(self, value):
+        return str(value) if isinstance(value, ObjectId) else value
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -12,6 +17,8 @@ class TeamSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class ActivitySerializer(serializers.ModelSerializer):
+    user = ObjectIdField(source='user.id')
+
     class Meta:
         model = Activity
         fields = '__all__'
